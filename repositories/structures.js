@@ -38,9 +38,9 @@
     // Define the save functionality
     getMonitored: function () {
       return [{
-          name: "String"
+          name: "Products"
         },{
-          name: "Number"
+          name: "Prices"
         }];
       /*
       var a = structures.all(),
@@ -56,50 +56,35 @@
     
     getStructs: function (name) {
       switch(name) {
-        case "String":
+        case "Products":
           return {
             attributes: {
               name : {
                 type: "string"
+              },
+              number: {
+                type: "number"
               }
             }
           };
           break;
-        case "Number":
+        case "Prices":
           return {
             attributes: {
-              int : {
+              number : {
                 type: "number"
               },
-              double: {
+              price: {
                 type: "number"
               },
-              boolean: {
-                type: "boolean"
-              }
-            }
-          };
-          break;
-        case "All":
-          return {
-            attributes: {
-              int : {
-                type: "number"
-              },
-              double: {
-                type: "number"
-              },
-              name : {
-                type: "string"
-              },
-              boolean: {
+              available: {
                 type: "boolean"
               }
             }
           };
           break;
         default:
-          res.json("Error has to be done!");
+          res.json("Error handling has to be done!");
       }
       /*
       return structures.firstExample({collection: name});
@@ -108,34 +93,38 @@
     
     getContent: function (name) {
       switch(name) {
-        case "String":
+        case "Products":
           return [{
-            _id: "String/1",
+            _id: "Products/1",
             _rev: "1",
             _key: "1",
-            name: "Test"
+            name: "Milk",
+            number: 2
+          },{
+            _id: "Products/2",
+            _rev: "2",
+            _key: "2",
+            name: "Eggs",
+            number: 1
           }];
-        case "Number":
+        case "Prices":
           return [{
-            _id: "Number/1",
+            _id: "Prices/1",
             _rev: "1",
             _key: "1",
-            int: 4,
-            double: 4.5,
-            boolean: true
-          }];
-        case "All":
-          return [{
-            _id: "All/1",
-            _rev: "1",
-            _key: "1",
-            int: 4,
-            double: 4.5,
-            name: "Test",
-            boolean: true
+            number: 1,
+            price: 0.20,
+            available: true
+          },{
+            _id: "Prices/2",
+            _rev: "2",
+            _key: "2",
+            number: 2,
+            price: 1.50,
+            available: false
           }];
         default:
-          return "Error has to be done!";
+          return "Error handling has to be done!";
       }
       /*
       var db = require("internal").db._collection(name);
