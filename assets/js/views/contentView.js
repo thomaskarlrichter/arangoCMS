@@ -32,14 +32,17 @@ $(function () {
 		},
 
     deleteMarked: function() {
-      var self = this;
-      $(".checkBulk").filter(function() {
-        return $(this).prop("checked");
-      }).closest("tr").map(function() {
-        return $(this).attr("id");
-      }).each(function(e, key) {
-        self.collection.get(key).destroy();
-      });
+      var self = this,
+        modal = new app.DeleteConfView({callback: function() {
+          $(".checkBulk").filter(function() {
+            return $(this).prop("checked");
+          }).closest("tr").map(function() {
+            return $(this).attr("id");
+          }).each(function(e, key) {
+            self.collection.get(key).destroy();
+          });
+        }});
+      modal.render();
     },
 
     checkAll: function() {
@@ -54,8 +57,12 @@ $(function () {
     },
     
     deleteDocument: function(event) {
-      var _id = $(event.currentTarget).closest("tr").attr("id");
-      this.collection.get(_id).destroy();
+      var _id = $(event.currentTarget).closest("tr").attr("id"),
+        self = this,
+        modal = new app.DeleteConfView({callback: function() {
+          self.collection.get(_id).destroy();
+        }});
+      modal.render();
     },
 
     addDocument: function() {
@@ -65,7 +72,6 @@ $(function () {
     },
     
     editDocument: function(event) {
-      
       var _id = $(event.currentTarget).closest("tr").attr("id"),
         doc = this.collection.get(_id),
         cols = this.collection.getColumns(),
