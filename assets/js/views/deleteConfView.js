@@ -47,13 +47,9 @@ $(function () {
     },
     
 		render: function () {
-      console.log("a");
       $(this.el).append(this.template.text);
-      console.log("b");
       this.delegateEvents();
-      console.log("c");
       $('#confirmation_modal').modal("show");
-      console.log("d");
 		}
 	});
 }());
