@@ -42,12 +42,18 @@
   //TODO!
   app.put("/content/:name/:key", function (req, res) {
     res.json({});
-  });
+  })
+  .nickname("content")
+  .summary("Edit one entry")
+  .notes("Edit one item of a collection.");
   
   //TODO!
   app.del("/content/:name/:key", function (req, res) {
     res.json();
-  });
+  })
+  .nickname("content")
+  .summary("Dekete one entry")
+  .notes("Delete one item of a collection.");
   
   
   //TODO!
@@ -58,7 +64,10 @@
     content._id = req.params("name") + "/" + key;
     content._rev = key;
     res.json(content);
-  });
+  })
+  .nickname("content")
+  .summary("Create a new entry")
+  .notes("Create a new item in a collection.");
   
   
   app.get('/test/list', function (req, res) {
