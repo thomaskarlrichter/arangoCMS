@@ -33,7 +33,8 @@
   
   var _ = require("underscore"),
     Foxx = require("org/arangodb/foxx"),
-    structures = require("internal").db._collection("_structures"); // TODO!
+    db = require("internal").db,
+    structures = db._collection("_structures");
   exports.Repository = Foxx.Repository.extend({
     // Define the save functionality
     getMonitored: function () {
@@ -91,46 +92,28 @@
       */
     },
     
+    createDoc: function (name, data) {
+      var col = db._collection(name);
+      return col.save(data);
+    },
+    
+    updateDoc: function (name, key, data) {
+      require("console").log(name);
+      require("console").log(key);
+      var col = db._collection(name);
+      return col.replace(key, data);
+    },
+    
+    deleteDoc: function (name, key) {
+      require("console").log(key);
+      var col = db._collection(name);
+      return col.remove(key);
+    },
+    
     getContent: function (name) {
-      switch(name) {
-        case "Products":
-          return [{
-            _id: "Products/1",
-            _rev: "1",
-            _key: "1",
-            name: "Milk",
-            number: 2
-          },{
-            _id: "Products/2",
-            _rev: "2",
-            _key: "2",
-            name: "Eggs",
-            number: 1
-          }];
-        case "Prices":
-          return [{
-            _id: "Prices/1",
-            _rev: "1",
-            _key: "1",
-            number: 1,
-            price: 0.20,
-            available: true
-          },{
-            _id: "Prices/2",
-            _rev: "2",
-            _key: "2",
-            number: 2,
-            price: 1.50,
-            available: false
-          }];
-        default:
-          return "Error handling has to be done!";
-      }
-      /*
-      var db = require("internal").db._collection(name);
+      var col = db._collection(name);
       // TODO: Requires Optimization!
-      return db.toArray();
-      */
+      return col.toArray();
     }
   });
   

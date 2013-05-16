@@ -39,31 +39,29 @@
   .summary("Get the content")
   .notes("Collects the complete content of one collection.");
   
-  //TODO!
   app.put("/content/:name/:key", function (req, res) {
-    res.json({});
+    var name = req.params("name"),
+      key = req.params("key"),
+      data = JSON.parse(req.requestBody);
+    res.json(repositories.structs.updateDoc(name, key, data));
   })
   .nickname("content")
   .summary("Edit one entry")
   .notes("Edit one item of a collection.");
   
-  //TODO!
   app.del("/content/:name/:key", function (req, res) {
-    res.json();
+    var name = req.params("name"),
+      key = req.params("key");
+    res.json(repositories.structs.deleteDoc(name, key));
   })
   .nickname("content")
-  .summary("Dekete one entry")
+  .summary("Delete one entry")
   .notes("Delete one item of a collection.");
   
-  
-  //TODO!
   app.post("/content/:name/", function (req, res) {
-    var content = JSON.parse(req.requestBody);
-    var key = Math.floor(Math.random() * 100000);
-    content._key = key;
-    content._id = req.params("name") + "/" + key;
-    content._rev = key;
-    res.json(content);
+    var name = req.params("name"),
+      data = JSON.parse(req.requestBody);
+    res.json(repositories.structs.createDoc(name, data));
   })
   .nickname("content")
   .summary("Create a new entry")

@@ -71,17 +71,21 @@ $(function () {
       this.validationObj.success = success;
       this.validationObj.messages = messages;
       this.validationObj.submitHandler = submitHandler;
-      
+      this.wasSubmitted = false;
 		},
     
     submit: function(e) {
-      $('#document_form').submit();
+      if (this.wasSubmitted) {
+        return;
+      }
+      this.wasSubmitted = true;
       e.stopPropagation();
+      $('#document_form').submit();
     },
     
     editOnEnter: function(e) {
       if (e.keyCode === 13) {
-        this.submit();
+        this.submit(e);
       }
     },
     
@@ -130,7 +134,9 @@ $(function () {
       this.delegateEvents();
       this.activateValidation();
       $('#document_modal').modal("show");
-      
+      $('#document_modal').on('shown', function() {
+          $("#document_modal input[type='text']:enabled:first").focus();
+      });
 		}
 	});
 }());

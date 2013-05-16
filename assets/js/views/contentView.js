@@ -12,7 +12,10 @@ $(function () {
 		events: {
       "click .delete": "deleteDocument",
       "click #addNew": "addDocument",
-      "click .edit": "editDocument"
+      "click .edit": "editDocument",
+      "click .attrtitle": "sortBy",
+      "click #checkAll": "checkAll",
+      "click #deleteMarked": "deleteMarked"
 		},
 
 		initialize: function () {
@@ -25,8 +28,31 @@ $(function () {
       });
       this.collection.bind("change", self.render.bind(self));
       this.collection.bind("remove", self.render.bind(self));
+      this.collection.bind("sort", self.render.bind(self));
 		},
 
+    deleteMarked: function() {
+      var self = this;
+      $(".checkBulk").filter(function() {
+        return $(this).prop("checked");
+      }).closest("tr").map(function() {
+        return $(this).attr("id");
+      }).each(function(e, key) {
+        self.collection.get(key).destroy();
+      });
+    },
+
+    checkAll: function() {
+      var setTo = $("#checkAll").prop("checked");
+      $(".checkBulk").prop("checked", setTo);
+    },
+
+    sortBy: function(event) {
+      var attribute = $(event.currentTarget).text();
+      this.collection.comparator = attribute;
+      this.collection.sort();
+    },
+    
     deleteDocument: function(event) {
       var _id = $(event.currentTarget).closest("tr").attr("id");
       this.collection.get(_id).destroy();
