@@ -155,6 +155,13 @@
           int: 4,
           double: 4.5,
           name: "Test"
+        },{
+          _id: "All/2",
+          _rev: "2",
+          _key: "2",
+          int: 14,
+          double: 14.5,
+          name: "foxx"
         }]);
         break;
       default:

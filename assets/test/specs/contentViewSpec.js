@@ -86,12 +86,12 @@
             rowsSelector = tableSelector + " tr",
             headerRow = $("> th", $(rowsSelector).eq(0)),
             firstRow = $("> td", $(rowsSelector).eq(1)),
+            secondRow = $("> td", $(rowsSelector).eq(2)),
             contentActions = $(".btn", firstRow.eq(0));
           expect($(tableSelector).length).toEqual(1);
-          expect($(rowsSelector).length).toEqual(2);
+          expect($(rowsSelector).length).toEqual(3);
         
           expect(headerRow.length).toEqual(5);
-          expect(headerRow.eq(0).text()).toEqual("Actions");
           expect(headerRow.eq(1).text()).toEqual("_key");
           expect(headerRow.eq(2).text()).toEqual("double");
           expect(headerRow.eq(3).text()).toEqual("int");
@@ -105,6 +105,14 @@
           expect(firstRow.eq(4).text()).toEqual("Test");
           expect(contentActions.length).toEqual(2);
           
+          expect(secondRow.length).toEqual(5);
+          expect($(rowsSelector).eq(2).attr("id")).toEqual("2");
+          expect(secondRow.eq(1).text()).toEqual("2");
+          expect(secondRow.eq(2).text()).toEqual("14.5");
+          expect(secondRow.eq(3).text()).toEqual("14");
+          expect(secondRow.eq(4).text()).toEqual("foxx");
+          expect(contentActions.length).toEqual(2);
+
           expect(contentActions.eq(0).hasClass("edit")).toBeTruthy();
           expect(contentActions.eq(1).hasClass("delete")).toBeTruthy();
         });
@@ -150,31 +158,7 @@
         waits(1000);
       });
       
-      /*
-      it('should be possible to add a new item', function() {
-        
-        runs(function() {
-          spyOn(collection, "create");
-          
-          $("#addNew").click();
-          $("#double").attr("value", "1.34");
-          $("#int").attr("value", "42");
-          $("#name").attr("value", "Circus");
-          $("#store").click();
-          
-          expect(collection.create).wasCalledWith({
-            double: 1.34,
-            int: 42,
-            name: "Circus"
-          });
-        });
-        
-        waitsFor(function() {
-          return $("#document_modal").length === 0;
-        }, 1000, "The modal view should have been disappeared.");        
-        
-      });
-      */
+      
       it('should be possible to edit an item', function() {
         
         runs(function() {
@@ -204,6 +188,36 @@
             int: 42,
             name: "Circus"
           });
+          
+        });
+        
+        waitsFor(function() {
+          return $(".modal-backdrop").length === 0;
+        }, 1000, "The modal view should have been disappered.");        
+        
+      });
+      
+      /* No Idea why this test does not work
+      * It triggers a reload of the test page, whereas no reload is
+      * triggered in production.
+      * Can't see a difference to edit an item...
+      
+      it('should be possible to add a new item', function() {
+        
+        runs(function() {
+          spyOn(collection, "create");
+          
+          $("#addNew").click();
+          $("#double").attr("value", "1.34");
+          $("#int").attr("value", "42");
+          $("#name").attr("value", "Circus");
+          $("#store").click();
+          
+          expect(collection.create).wasCalledWith({
+            double: 1.34,
+            int: 42,
+            name: "Circus"
+          });
         });
         
         waitsFor(function() {
@@ -212,20 +226,97 @@
         
       });
       
+      */
       it('should be possible to delete an item', function() {
-        var firstCell = $("> td", $("#content table tr").eq(1)).eq(0),
-          model = collection.findWhere({
-            double: 4.5,
-            int: 4,
-            name: "Test"
-          });
+        runs(function() {
+          var firstCell = $("> td", $("#content table tr").eq(1)).eq(0),
+            model = collection.findWhere({
+              double: 4.5,
+              int: 4,
+              name: "Test"
+            });
+          spyOn(model, "destroy");
         
-        spyOn(model, "destroy");
+          $(".delete", firstCell).click();
         
-        $(".delete", firstCell).click();
+          $("#delete").click();
   
-        expect(model.destroy).toHaveBeenCalled();        
+          expect(model.destroy).toHaveBeenCalled();
+        });
+        
+        waitsFor(function() {
+          return $(".modal-backdrop").length === 0;
+        }, 1000, "The modal view should have been disappered.");
+        
+      });
       
+      it('should be possible to sort the items by attribute key', function() {
+        spyOn(collection, "sort");
+        
+        $("#attrtitle_double").click();
+        
+        expect(collection.sort).toHaveBeenCalled();
+        expect(collection.comparator).toEqual("double");
+      });
+      
+      it('should be possible to toggle selection of all items', function() {
+        var boxSelector = ".checkBulk",
+          amountOfBoxes = $(boxSelector).length;
+        
+          // Select all
+        $("#checkAll").click();
+        
+        expect($(boxSelector).filter(function() {
+          return $(this).prop("checked");
+        }).length).toEqual(amountOfBoxes);
+        // Unselect all
+        $("#checkAll").click();
+        
+        expect($(boxSelector).filter(function() {
+          return $(this).prop("checked");
+        }).length).toEqual(0);
+      });
+      
+      it('should be possible to delete all checked items', function() {
+        
+        runs(function() {
+          var amountOfBoxes = collection.length,
+            model1 = collection.findWhere({
+              double: 4.5,
+              int: 4,
+              name: "Test"
+            }),
+            model2 = collection.findWhere({
+              int: 14,
+              double: 14.5,
+              name: "foxx"
+            });
+        
+          spyOn(model1, "destroy");
+          spyOn(model2, "destroy");
+        
+          $("#checkAll").click();
+        
+          $("#deleteMarked").click();
+        
+          $("#delete").click();
+        
+          expect(model1.destroy).toHaveBeenCalled();
+          expect(model2.destroy).toHaveBeenCalled();
+        });
+        
+        waitsFor(function() {
+          return $(".modal-backdrop").length === 0;
+        }, 1000, "The modal view should have been disappered.");
+        
+      });
+      
+      it('should be possible to filter the items by content', function() {
+        $("#searchField").val("foxx");
+        $("#searchField").keyup();
+        
+        expect($("#content table tr").length).toEqual(2);
+        expect($("#content table tr").eq(1).attr("id")).toEqual("2");
       });
       
     });

@@ -1,34 +1,17 @@
-<% cols = this.data.collection.getColumns() %>
-<table class="table table-condensed table-bordered">
-  <tr>
-    <th>
-      <div class="btn-group">
-        <input id="checkAll" type="checkbox"></input>
-      </div>
-      Actions
-    </th>
-    <th class="attrtitle">_key</th>
-    <% _.each(cols, function(c) { %>
-      <th class="attrtitle"><%=c.name%></th>
-    <%});%>
-  </tr>
-  <% this.data.collection.each(function (d) { %>
-    <tr id=<%=d.get("_key")%>>
-      <td>
-        <div class="btn-group">
-          <input class="checkBulk" type="checkbox"></input>
-        </div>
-        <div class="btn-group">
-          <a class="btn edit"><i class="icon-edit"></i></a>
-          <a class="btn delete btn-danger"><i class="icon-trash"></i></a>
-        </div>
-      </td>
-      <td><%=d.get("_key")%></td>
-      <% _.each(cols, function(c) { %>
-        <td><%=d.get(c.name)%></td>
-      <% }); %>
-    </tr>
-  <% }) %>
+<%
+  var templ = new EJS({url: 'templates/contentTableView.ejs'});
+%>
+<div class="pull-left">
+  <div class='input-append'>
+      <input id="searchField" placeholder="Search..."/>
+      <button id="startSearch" class='btn add-on'>
+          <i class="icon-search"></i>
+      </button>
+  </div>
+</div>
+
+<table id="contentTable" class="table table-condensed table-bordered">
+  <%=templ.render(this.data)%>
 </table>
 <div id="cmsMenuBar">
   <form class="form-inline">

@@ -75,11 +75,11 @@ $(function () {
 		},
     
     submit: function(e) {
+      e.stopPropagation();
       if (this.wasSubmitted) {
         return;
       }
       this.wasSubmitted = true;
-      e.stopPropagation();
       $('#document_form').submit();
     },
     

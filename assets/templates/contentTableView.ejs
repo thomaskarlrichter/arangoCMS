@@ -1,0 +1,32 @@
+<% var cols = this.data.columns; %>
+<% var searchValue = this.data.search || ""; %>
+
+<tr>
+  <th>
+    <div class="btn-group">
+      <input id="checkAll" type="checkbox"></input>
+    </div>
+    Actions
+  </th>
+  <th class="attrtitle">_key</th>
+  <% _.each(cols, function(c) { %>
+    <th class="attrtitle" id="attrtitle_<%=c.name%>"><%=c.name%></th>
+  <%});%>
+</tr>
+<% _.each(this.data.models, function (d) { %>
+  <tr id=<%=d.get("_key")%>>
+    <td>
+      <div class="btn-group">
+        <input class="checkBulk" type="checkbox"></input>
+      </div>
+      <div class="btn-group">
+        <a class="btn edit"><i class="icon-edit"></i></a>
+        <a class="btn delete btn-danger"><i class="icon-trash"></i></a>
+      </div>
+    </td>
+    <td><%=d.get("_key")%></td>
+    <% _.each(cols, function(c) { %>
+      <td><%=d.get(c.name)%></td>
+    <% }); %>
+  </tr>
+<% }) %>

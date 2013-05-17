@@ -15,7 +15,9 @@ $(function () {
       "click .edit": "editDocument",
       "click .attrtitle": "sortBy",
       "click #checkAll": "checkAll",
-      "click #deleteMarked": "deleteMarked"
+      "click #deleteMarked": "deleteMarked",
+      "click #startSearch": "filterBy",
+      "keyup #searchField": "filterBy"
 		},
 
 		initialize: function () {
@@ -29,9 +31,12 @@ $(function () {
       this.collection.bind("change", self.render.bind(self));
       this.collection.bind("remove", self.render.bind(self));
       this.collection.bind("sort", self.render.bind(self));
+      this.tmplTable = new EJS({url: 'templates/contentTableView.ejs'});
+      
 		},
 
-    deleteMarked: function() {
+    deleteMarked: function(e) {
+      e.preventDefault();
       var self = this,
         modal = new app.DeleteConfView({callback: function() {
           $(".checkBulk").filter(function() {
@@ -54,6 +59,26 @@ $(function () {
       var attribute = $(event.currentTarget).text();
       this.collection.comparator = attribute;
       this.collection.sort();
+    },
+    
+    filterBy: function() {
+      
+      var value = $("#searchField").val(),
+        pattern = new RegExp(value,"gi"),
+        toRender = this.collection.filter(function(data) {
+          var found = false;
+          _.each(data.attributes, function (val, key){
+            if (key == "_id" || key == "_rev") {
+              return;
+            }
+            if (pattern.test(val)) {
+              found = true;
+            }
+            return;
+          });
+          return found;
+        });
+      this.reRenderTable(toRender);
     },
     
     deleteDocument: function(event) {
@@ -79,10 +104,14 @@ $(function () {
       modal.render();
     },
 
-		// Re-render the titles of the todo item.
+    reRenderTable: function(filteredModels) {
+      $("#contentTable").html(this.tmplTable.render({models: filteredModels, columns: this.collection.getColumns()}));
+    },
+
 		render: function () {
+      var toRender = this.collection.models;
       $(this.el).off();
-      $(this.el).html(this.template.render({collection: this.collection}));
+      $(this.el).html(this.template.render({models: toRender, columns: this.collection.getColumns()}));
       this.delegateEvents();
 			return this;
 		}
