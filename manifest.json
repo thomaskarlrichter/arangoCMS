@@ -1,6 +1,6 @@
 {
   "name": "arangoCMS",
-  "version": "0.0.2",
+  "version": "0.1.2",
   "description": "A Content Management System for ArangoDB",
   "thumbnail": "arangoLogo.png",
 
