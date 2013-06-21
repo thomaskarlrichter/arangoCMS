@@ -1,0 +1,23 @@
+<component name="libraryTable">
+  <library name="foxx-Components Client" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/assets/components/js/underscore/underscore.js" />
+        <item url="file://$PROJECT_DIR$/assets/components/js/jquery/jquery.js" />
+        <item url="file://$PROJECT_DIR$/assets/components/js/backbone/backbone.js" />
+        <item url="file://$PROJECT_DIR$/assets/components/js/bootstrap/bootstrap.js" />
+        <item url="file://$PROJECT_DIR$/assets/components/js/ejs/ejs_fulljslint.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/assets/components/js/underscore/underscore.js" />
+      <root url="file://$PROJECT_DIR$/assets/components/js/jquery/jquery.js" />
+      <root url="file://$PROJECT_DIR$/assets/components/js/jquery/jquery.validate.min.js" />
+      <root url="file://$PROJECT_DIR$/assets/components/js/backbone/backbone.js" />
+      <root url="file://$PROJECT_DIR$/assets/components/js/bootstrap/bootstrap.js" />
+      <root url="file://$PROJECT_DIR$/assets/components/js/ejs/ejs_fulljslint.js" />
+      <root url="file://$PROJECT_DIR$/assets/components/js/ejs/ejs_0.9_alpha_1_production.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

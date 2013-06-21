@@ -1,5 +1,5 @@
 Arango CMS
-=======
+==========
 
 This is a Content Management System for the ArangoDB.
 It is based on struct information.
@@ -20,7 +20,7 @@ More details will be added as soon as struct information is fully implemented.
 After [installing ArangoDB](http://www.arangodb.org/download), start your server and point it to the location of the cloned repository:
 
     $ arangod --javascript.dev-app-path /path/to/aye_aye /path/to/your/arango_db
-    
+
 Then start your Arango shell (`$ arangosh`) and run the following commands:
 
     arangosh> aal = require('org/arangodb/aal')
